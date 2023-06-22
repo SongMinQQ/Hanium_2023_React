@@ -70,10 +70,11 @@ function getConnection(connName){
     }
   }
 
-  function readData(data){
-    console.log(data);
-  }
-  
+//   function readData(data){
+//     console.log(data);
+//   }
+//readData함수 만들어야함
+
 app.get("/api/hello", (req,res) => {
     var server = getConnection("hanium");
     // var data = {
@@ -81,7 +82,7 @@ app.get("/api/hello", (req,res) => {
     //     "cmd" : 0xff,
     //     "dataType" : 0xa0,
     //     "dataSize" : 5
-    // };
+    // };함
     var x = new Int32Array([0x02,0x12,0x01,0x05])
     console.log(x)
     //[0x02, 0x12, 0xff, 0x01, 0x12,0xff,0x00,0x05]
