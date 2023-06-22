@@ -69,7 +69,23 @@ function getConnection(connName){
       })(socket, data);
     }
   }
+
+  function readData(data){
+    console.log(data);
+  }
+  
 app.get("/api/hello", (req,res) => {
     var server = getConnection("hanium");
-    writeData(server, "More Axes");
+    // var data = {
+    //     "startID" : 0x02,
+    //     "cmd" : 0xff,
+    //     "dataType" : 0xa0,
+    //     "dataSize" : 5
+    // };
+    var x = new Int32Array([0x02,0x12,0x01,0x05])
+    console.log(x)
+    //[0x02, 0x12, 0xff, 0x01, 0x12,0xff,0x00,0x05]
+    var buf = new Buffer.from(x)
+    console.log(buf);
+    writeData(server,buf);
 })

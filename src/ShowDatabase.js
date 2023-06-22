@@ -15,7 +15,7 @@ const ShowDatabase = (props) => {
         //setDbData([...res.data]); // response data를 받아서 dbData에 저장
       })
       .catch((err) => {
-        console.log(err);결
+        console.log(err);
       });
   };
 
