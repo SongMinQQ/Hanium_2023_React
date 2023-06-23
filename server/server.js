@@ -70,9 +70,9 @@ function getConnection(connName){
     }
   }
 
-//   function readData(data){
-//     console.log(data);
-//   }
+  function readData(data){
+    console.log(data);
+  }
 //readData함수 만들어야함
 
 app.get("/api/hello", (req,res) => {
@@ -89,4 +89,7 @@ app.get("/api/hello", (req,res) => {
     var buf = new Buffer.from(x)
     console.log(buf);
     writeData(server,buf);
+    server.on('data', function(data) {
+      readData(data.toString());
+    });
 })
