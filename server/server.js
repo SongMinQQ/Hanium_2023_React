@@ -83,7 +83,7 @@ app.get("/api/hello", (req,res) => {
     //     "dataType" : 0xa0,
     //     "dataSize" : 5
     // };함
-    var x = new Int32Array([0x02,0x12,0x01,0x05])
+    var x = new Int8Array([0x02,0x12,0x01,0x05])
     console.log(x)
     //[0x02, 0x12, 0xff, 0x01, 0x12,0xff,0x00,0x05]
     var buf = new Buffer.from(x.buffer)
