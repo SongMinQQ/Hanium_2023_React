@@ -86,7 +86,7 @@ app.get("/api/hello", (req,res) => {
     // var x = new Int8Array([0x02,0x12,0x01,0x05])
     // console.log(x)
     //[0x02, 0x12, 0xff, 0x01, 0x12,0xff,0x00,0x05]
-    var buf = new Buffer.from([0xf9])
+    var buf = new Buffer.from([0xf9,0x12])
     console.log(buf);
     writeData(server,buf);
     server.on('data', function(data) {
