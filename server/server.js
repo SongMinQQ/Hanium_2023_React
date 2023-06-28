@@ -78,7 +78,16 @@ function getConnection(connName){
 
 app.get("/api/hello", (req,res) => {
     var server = getConnection("hanium");
-    var buf = new Buffer.from([0X12,0x12,0xf9,0xa0,0x08])
+    // var data = {
+    //     "startID" : 0x02,
+    //     "cmd" : 0xff,
+    //     "dataType" : 0xa0,
+    //     "dataSize" : 5
+    // };함
+    // var x = new Int8Array([0x02,0x12,0x01,0x05])
+    // console.log(x)
+    //[0x02, 0x12, 0xff, 0x01, 0x12,0xff,0x00,0x05]
+    var buf = new Buffer.from([0X13,0x12,0xf9,0xa0,0x08])
     console.log(buf);
     writeData(server,buf);
     server.on('data', function(data) {
