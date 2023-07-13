@@ -84,4 +84,5 @@ app.get("/api/hello", (req,res) => {
     server.on('data', function(data) {
       readData(data);
     });
+    server.end();
 })
