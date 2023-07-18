@@ -9,10 +9,10 @@ const ShowDatabase = (props) => {
 
   const getData = () => {
     axios
-      .get("http://localhost:3001/api/hello")//http://localhost:3001/api/2023_0417 router은 db연결
+      .get("http://localhost:3001/api/2023_0417")//http://localhost:3001/api/2023_0417 router은 db연결
       .then((res) => {
         console.log(res);
-        //setDbData([...res.data]); // response data를 받아서 dbData에 저장
+        setDbData([...res.data]); // response data를 받아서 dbData에 저장
       })
       .catch((err) => {
         console.log(err);
