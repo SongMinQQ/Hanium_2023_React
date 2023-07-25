@@ -33,12 +33,13 @@ app.get("/api/2023_0417", (req,res) => {
 })
 
 function getConnection(connName){
-    var client = net.connect({port: 8700, host:'192.168.219.180'}, function() {
+    var client = net.connect({port: 8700, host:'192.168.110.173'}, function() {
       console.log(connName + ' Connected: ');
       console.log('   local = %s:%s', this.localAddress, this.localPort);
       console.log('   remote = %s:%s', this.remoteAddress, this.remotePort);
       this.setTimeout(500);
       this.setEncoding('utf8');
+      client.write('hi');//send hi to server
       this.on('data', function(data) {
         console.log(connName + " From Server: " + data.toString());
         this.end();
@@ -56,6 +57,7 @@ function getConnection(connName){
         console.log('Socket Closed');
       });
     });
+
     return client;
   }
 
@@ -63,14 +65,25 @@ function getConnection(connName){
     var success = !socket.write(data);
     if (!success){
       (function(socket, data){
-        console.log(data)
         socket.once('drain', function(){
           writeData(socket, data);
+          //socket.end();
         });
       })(socket, data);
     }
-    
+      
   }
+
+  app.get("/api/hello", (req,res) => {
+    var server = getConnection("hanium");
+    var buf = new Buffer.from([0x13,0x12,0xff,0xa0,0x00])
+    writeData(server,buf);
+    // server.on('data', function(data) {
+    //   console.log(data);
+    // });
+    server.end();
+    res.send(false);//웹 반응 테스트용
+  })
 
   //print res data, data type : byteArray
   // function readData(data){
@@ -89,14 +102,3 @@ function getConnection(connName){
 //     server.end();
 // })
 
-app.get("/api/hello", (req,res) => {
-  var server = getConnection("hanium");
-  var buf = new Buffer.from([0x13,0x12,0xff,0xa0,0x08])
-  console.log(buf);
-  writeData(server,buf);
-  // server.on('data', function(data) {
-  //   console.log(data);
-  // });
-  server.end();
-  res.send(false);//웹 반응 테스트용
-})
