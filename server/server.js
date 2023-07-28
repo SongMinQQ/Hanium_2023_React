@@ -2,9 +2,10 @@ const express = require('express');
 const cors = require("cors");
 const mysql = require("mysql");
 var net = require('net');
-const { escape } = require('querystring');
 const app = express();
 const PORT = 3001;
+
+//write your db info
 
 const db = mysql.createPool({
     host: "127.0.0.1",
@@ -21,9 +22,13 @@ app.use(cors({
 
 app.use(express.urlencoded({extended: true}));
 
+//server open, using express package 
+
 app.listen(PORT, () => {
     console.log(`server running on port${PORT}`);
 });
+
+//get db data router
 
 app.get("/api/2023_0417", (req,res) => {
     res.header("Access-Control-Allow-Origin", "*")
@@ -32,6 +37,8 @@ app.get("/api/2023_0417", (req,res) => {
         res.send(result);
     })
 })
+
+//server connect function, write your server port num, ip address
 
 function getConnection(connName){
     var client = net.connect({port: 8700, host:'192.168.219.152'}, function() {
@@ -61,17 +68,20 @@ function getConnection(connName){
     return client;
   }
 
+//write function, if status is 'drain' recursive call, save data
+
   function writeData(socket, data){
     var success = !socket.write(data);
     if (!success){
       (function(socket, data){
         socket.once('drain', function(){
           writeData(socket, data);
-          //socket.end();
         });
       })(socket, data);
     }
   }
+
+//connect server router
 
   app.get("/api/hello", (req,res) => {
     var server = getConnection("hanium");
@@ -83,11 +93,11 @@ function getConnection(connName){
     setTimeout(() => {
       writeData(server, buf3);
     }, 2000);
-    // server.on('data', function(data) {
+    // server.on('data', function(data) {           //서버가 응답을 보낼 경우 웹에 전송(현재 미사용)
     //   console.log(data);
     //  res.send(data);
     // });
     server.end();
-    res.send(false);//웹 반응 테스트용
+    res.send(false);//단지 웹 반응 테스트용, 나중에 서버에서 데이터가 잘 넘어오면 삭제 예정
   })
 
