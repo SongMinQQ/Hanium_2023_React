@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require("cors");
 const mysql = require("mysql");
 var net = require('net');
+const { escape } = require('querystring');
 const app = express();
 const PORT = 3001;
 
@@ -33,13 +34,12 @@ app.get("/api/2023_0417", (req,res) => {
 })
 
 function getConnection(connName){
-    var client = net.connect({port: 8700, host:'192.168.110.173'}, function() {
+    var client = net.connect({port: 8700, host:'192.168.219.152'}, function() {
       console.log(connName + ' Connected: ');
       console.log('   local = %s:%s', this.localAddress, this.localPort);
       console.log('   remote = %s:%s', this.remoteAddress, this.remotePort);
       this.setTimeout(500);
       this.setEncoding('utf8');
-      client.write('hi');//send hi to server
       this.on('data', function(data) {
         console.log(connName + " From Server: " + data.toString());
         this.end();
@@ -71,34 +71,23 @@ function getConnection(connName){
         });
       })(socket, data);
     }
-      
   }
 
   app.get("/api/hello", (req,res) => {
     var server = getConnection("hanium");
-    var buf = new Buffer.from([0x13,0x12,0xff,0xa0,0x00])
+    var buf = new Buffer.from([0x13,0x12,0xff,0xa0,0x03]);
+    var buf2 = new Buffer.from('abc','ascii');
+    var buf3 = new Buffer.from('abc','ascii');
     writeData(server,buf);
+    writeData(server, buf2);
+    setTimeout(() => {
+      writeData(server, buf3);
+    }, 2000);
     // server.on('data', function(data) {
     //   console.log(data);
+    //  res.send(data);
     // });
     server.end();
     res.send(false);//웹 반응 테스트용
   })
-
-  //print res data, data type : byteArray
-  // function readData(data){
-  //   data = new Uint8Array([data]);
-  //   console.log(data);
-  // }
-
-// app.get("/api/hello", (req,res) => {
-//     var server = getConnection("hanium");
-//     var buf = new Buffer.from([0x13,0x12,0xf9,0xa0,0x08])
-//     console.log(buf);
-//     writeData(server,buf);
-//     // server.on('data', function(data) {
-//     //   console.log(data);
-//     // });
-//     server.end();
-// })
 
