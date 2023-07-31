@@ -41,7 +41,7 @@ app.get("/api/2023_0417", (req,res) => {
 //server connect function, write your server port num, ip address
 
 function getConnection(connName){
-    var client = net.connect({port: 8700, host:'192.168.219.152'}, function() {
+    var client = net.connect({port: 8700, host:'192.168.110.173'}, function() {
       console.log(connName + ' Connected: ');
       console.log('   local = %s:%s', this.localAddress, this.localPort);
       console.log('   remote = %s:%s', this.remoteAddress, this.remotePort);
@@ -84,20 +84,21 @@ function getConnection(connName){
 //connect server router
 
   app.get("/api/hello", (req,res) => {
+    var args = process.argv;
+    console.log(args[2]);
     var server = getConnection("hanium");
-    var buf = new Buffer.from([0x13,0x12,0xff,0xa0,0x03]);
-    var buf2 = new Buffer.from('abc','ascii');
-    var buf3 = new Buffer.from('abc','ascii');
+    let dataSize = Buffer.allocUnsafe(4);  // Init buffer without writing all data to zeros
+    dataSize.writeInt32LE(0x00000005,0);  // Little endian this time..
+    var buf = new Buffer.from([0x13,0x12,0xff,0xa0,...dataSize]);
+    var buf2 = new Buffer.from(args[2],'ascii');
     writeData(server,buf);
-    writeData(server, buf2);
     setTimeout(() => {
-      writeData(server, buf3);
+      writeData(server, buf2);
     }, 2000);
     // server.on('data', function(data) {           //서버가 응답을 보낼 경우 웹에 전송(현재 미사용)
     //   console.log(data);
     //  res.send(data);
     // });
-    server.end();
-    res.send(false);//단지 웹 반응 테스트용, 나중에 서버에서 데이터가 잘 넘어오면 삭제 예정
+    //server.end();
+    res.send(false);//웹 반응 테스트용, 나중에 서버에서 데이터가 잘 넘어오면 삭제 예정
   })
-
