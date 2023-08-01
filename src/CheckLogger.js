@@ -9,10 +9,13 @@ const CheckLogger = () => {
                 .get("http://localhost:3001/api/hello")
                 .then((res) => {
                 console.log(res);
-                res?setStatus(true):setStatus(false)
+                if(res.status === 200)
+                    setStatus(true)
+                    
             })
             .catch((err) => {
                 console.log(err);
+                setStatus(false)
             });
         };
 

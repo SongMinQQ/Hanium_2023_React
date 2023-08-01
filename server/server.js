@@ -90,18 +90,18 @@ function getConnection(connName){
     var server = getConnection("hanium");
     let dataSize = Buffer.allocUnsafe(4);  // Init buffer without writing all data to zeros
     dataSize.writeInt32LE(argsSize,0);  // Little endian this time..
-    var buf = new Buffer.from([0x13,0x12,0xff,0xa0,...dataSize]);
-    var buf2 = new Buffer.from(args[2],'ascii');
-    var buf3 = new Buffer.from([0x13,0x12,0xf9,0xa0,0x00,0x00,0x00,0x00]);
-    writeData(server,buf);
-    setTimeout(() => {
-      writeData(server, buf2);
+    // var buf = new Buffer.from([0x13,0x12,0xff,0xa0,...dataSize]);
+    // var buf2 = new Buffer.from(args[2],'ascii');
+    var buf3 = new Buffer.from([0x13,0x12,0x09,0xa0,0x00,0x00,0x00,0x00]);
+    writeData(server,buf3);
+    // setTimeout(() => {
+      //writeData(server, buf2);
       //writeData(server, buf3); //또다시 버퍼를 기다리는게 맞는지 확인, 10초마다 재연결? 10초마다 write?
       //server.end(); //데이터를 보낸 후 통신 강제 종료, Command Receive Error
-    }, 2000);
-    // server.on('data', function(data) {           //서버가 응답을 보낼 경우 웹에 전송(현재 미사용)
-    //   console.log(data);
-    //  res.send(data);
-    // });
-    res.send(false);//웹 반응 테스트용, 나중에 서버에서 데이터가 잘 넘어오면 삭제 예정
+    // }, 2000);
+    server.on('data', function(data) {
+      console.log(data);
+    res.send(data);
+    });
+    //res.send(false);//웹 반응 테스트용, 나중에 서버에서 데이터가 잘 넘어오면 삭제 예정
   })
