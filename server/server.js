@@ -4,6 +4,8 @@ const mysql = require("mysql");
 var net = require('net');
 const app = express();
 const PORT = 3001;
+const serverPORT = 8700;
+const serverIpAddress = '192.168.219.136';
 
 //write your db info
 
@@ -38,10 +40,10 @@ app.get("/api/2023_0417", (req,res) => {
     })
 })
 
-//server connect function, write your server port num, ip address
+//server connect function, check your server port num, ip address
 
 function getConnection(connName){
-    var client = net.connect({port: 8700, host:'192.168.110.173'}, function() {
+    var client = net.connect({port: serverPORT, host:serverIpAddress}, function() {
       console.log(connName + ' Connected: ');
       console.log('   local = %s:%s', this.localAddress, this.localPort);
       console.log('   remote = %s:%s', this.remoteAddress, this.remotePort);
@@ -64,7 +66,6 @@ function getConnection(connName){
         console.log('Socket Closed');
       });
     });
-
     return client;
   }
 
@@ -83,25 +84,38 @@ function getConnection(connName){
 
 //connect server router
 
-  app.get("/api/hello", (req,res) => {
-    var args = process.argv;
-    console.log(args[2]);
-    let argsSize = args[2].length;
-    var server = getConnection("hanium");
-    let dataSize = Buffer.allocUnsafe(4);  // Init buffer without writing all data to zeros
-    dataSize.writeInt32LE(argsSize,0);  // Little endian this time..
-    // var buf = new Buffer.from([0x13,0x12,0xff,0xa0,...dataSize]);
-    // var buf2 = new Buffer.from(args[2],'ascii');
-    var buf3 = new Buffer.from([0x13,0x12,0x09,0xa0,0x00,0x00,0x00,0x00]);
-    writeData(server,buf3);
-    // setTimeout(() => {
-      //writeData(server, buf2);
-      //writeData(server, buf3); //또다시 버퍼를 기다리는게 맞는지 확인, 10초마다 재연결? 10초마다 write?
-      //server.end(); //데이터를 보낸 후 통신 강제 종료, Command Receive Error
-    // }, 2000);
-    server.on('data', function(data) {
-      console.log(data);
+app.get("/api/hello", (req,res) => {
+  var server = getConnection("hanium");
+  var buf3 = new Buffer.from([0x13,0x12,0x09,0xb0,0x00,0x00,0x00,0x00]);
+  writeData(server,buf3);
+  server.on('data', function(data) {
+    console.log(data);
     res.send(data);
-    });
-    //res.send(false);//웹 반응 테스트용, 나중에 서버에서 데이터가 잘 넘어오면 삭제 예정
-  })
+  });
+})
+
+//test router
+
+  // app.get("/api/hello", (req,res) => {
+  //   // var args = process.argv;
+  //   // console.log(args[2]);
+  //   // let argsSize = args[2].length;
+  //   var server = getConnection("hanium");
+  //   // let dataSize = Buffer.allocUnsafe(4);  // Init buffer without writing all data to zeros
+  //   // dataSize.writeInt32LE(argsSize,0);  // Little endian this time..
+  //   // var buf = new Buffer.from([0x13,0x12,0xff,0xa0,...dataSize]);
+  //   // var buf2 = new Buffer.from(args[2],'ascii');
+  //   var buf3 = new Buffer.from([0x13,0x12,0x09,0xb0,0x00,0x00,0x00,0x00]);
+  //   writeData(server,buf3);
+  //   // setTimeout(() => {
+  //     //writeData(server, buf2);
+  //     //writeData(server, buf3); //또다시 버퍼를 기다리는게 맞는지 확인, 10초마다 재연결? 10초마다 write?
+  //     //server.end(); //데이터를 보낸 후 통신 강제 종료, Command Receive Error
+  //   // }, 2000);
+  //   server.on('data', function(data) {
+  //     console.log(data);
+  //     console.log(data.length);
+  //   res.send(data);
+  //   });
+  //   //res.send(false);//웹 반응 테스트용, 나중에 서버에서 데이터가 잘 넘어오면 삭제 예정
+  // })
