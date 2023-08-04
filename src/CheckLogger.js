@@ -6,7 +6,7 @@ const CheckLogger = () => {
     useEffect(() => {
         const StatusCheck = () => {
             axios
-                .get("http://localhost:3001/api/hello")
+                .get("http://localhost:3001/api/tcp")
                 .then((res) => {
                 console.log(res);
                 if(res.status === 200)

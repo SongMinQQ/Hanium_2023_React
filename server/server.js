@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require("cors");
 const mysql = require("mysql");
-var net = require('net');
+const net = require('net');
 const app = express();
 const PORT = 3001;
 const serverPORT = 8700;
@@ -33,7 +33,7 @@ app.listen(PORT, () => {
 //get db data router
 
 app.get("/api/2023_0417", (req,res) => {
-    res.header("Access-Control-Allow-Origin", "*")
+    res.header("Access-Control-Allow-Origin", "*"); //allow all domains access (cors package)
     const sqlQuery = "SELECT * FROM 2023_0417";
     db.query(sqlQuery, (err, result) => {
         res.send(result);
@@ -48,7 +48,7 @@ function getConnection(connName){
       console.log('   local = %s:%s', this.localAddress, this.localPort);
       console.log('   remote = %s:%s', this.remoteAddress, this.remotePort);
       this.setTimeout(500);//no reply to server after 0.5 seconds, timeout
-      this.setEncoding('utf8');//encoding reply data
+      this.setEncoding('hex');//encoding reply data
       this.on('data', function(data) {
         console.log(connName + " From Server: " + data.toString());
         this.end();
@@ -82,9 +82,9 @@ function getConnection(connName){
     }
   }
 
-//connect server router
+//Transmission Control Protocol router
 
-app.get("/api/hello", (req,res) => {
+app.get("/api/tcp", (req,res) => {
   var server = getConnection("hanium");
   var buf3 = new Buffer.from([0x13,0x12,0x09,0xb0,0x00,0x00,0x00,0x00]);
   writeData(server,buf3);
