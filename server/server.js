@@ -6,6 +6,15 @@ const app = express();
 const PORT = 3001;
 const serverPORT = 8700;
 const serverIpAddress = '192.168.219.136';
+const fs = require("fs");
+
+fs.readFile('./server/rsa.pass.pub', 'utf8' , (err, data) => {
+  if (err) {
+    console.error(err)
+    returns
+  }
+  console.log(data)
+})
 
 //write your db info
 
