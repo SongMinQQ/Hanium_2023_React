@@ -3,9 +3,11 @@ const cors = require("cors");
 const mysql = require("mysql");
 const net = require('net');
 const app = express();
-const PORT = 3001;
+const apiPORT = 9000;
+
 const serverPORT = 8700;
-const serverIpAddress = '192.168.219.136';
+const serverIpAddress = '192.168.219.189';
+
 const fs = require("fs");
 
 fs.readFile('./server/rsa.pass.pub', 'utf8' , (err, data) => {
@@ -35,8 +37,8 @@ app.use(express.urlencoded({extended: true}));
 
 //server open, using express package 
 
-app.listen(PORT, () => {
-    console.log(`server running on port${PORT}`);
+app.listen(apiPORT, () => {
+    console.log(`server running on port${apiPORT}`);
 });
 
 //get db data router
@@ -45,6 +47,9 @@ app.get("/api/2023_0417", (req,res) => {
     res.header("Access-Control-Allow-Origin", "*"); //allow all domains access (cors package)
     const sqlQuery = "SELECT * FROM 2023_0417";
     db.query(sqlQuery, (err, result) => {
+      if(err){
+        console.log(err);
+      }
         res.send(result);
     })
 })
@@ -58,16 +63,16 @@ function getConnection(connName){
       console.log('   remote = %s:%s', this.remoteAddress, this.remotePort);
       this.setTimeout(500);//no reply to server after 0.5 seconds, timeout
       this.setEncoding('hex');//encoding reply data
-      this.on('data', function(data) {
-        console.log(connName + " From Server: " + data.toString());
-        this.end();
-      });
-      this.on('end', function() {
-        console.log(connName + ' Client disconnected');
-      });
-      this.on('error', function(err) {
-        console.log('Socket Error: ', JSON.stringify(err));
-      });
+      // this.on('data', function(data) {
+      //   console.log(connName + " From Server: " + data.toString());
+      //   this.end();
+      // });
+      // this.on('end', function() {
+      //   console.log(connName + ' Client disconnected');
+      // });
+      // this.on('error', function(err) {
+      //   console.log('Socket Error: ', JSON.stringify(err));
+      // });
       this.on('timeout', function() {
         console.log('Socket Timed Out');
       });
@@ -75,6 +80,16 @@ function getConnection(connName){
         console.log('Socket Closed');
       });
     });
+    client.on('data', function(data) {
+      console.log(connName + " From Server: " + data.toString());
+      client.end();
+    })
+    client.on('end', function() {
+      console.log(connName + ' Client disconnected');
+    });
+    client.on('error', function (err) {
+      console.log(connName + ' Connection Failed: ', JSON.stringify(err));
+  });
     return client;
   }
 

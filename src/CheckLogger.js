@@ -2,24 +2,26 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const CheckLogger = () => {
-    const [status,setStatus] = useState(false);
+    const [serverStatus,setServerStatus] = useState(false);
+    //const [loggerStatus,setLoggerStatus] = useState(false);
     useEffect(() => {
-        const StatusCheck = () => {
+        const statusCheck = () => {
             axios
-                .get("http://localhost:3001/api/tcp")
+                .get("http://localhost:9000/api/tcp")
                 .then((res) => {
                 console.log(res);
-                if(res.status === 200)
-                    setStatus(true)
-                    
+                if(res.data === '1213f90000000000')
+                    setServerStatus(true);
+                else
+                    serverStatus(false);
             })
             .catch((err) => {
                 console.log(err);
-                setStatus(false)
+                setServerStatus(false)
             });
         };
 
-        const interval10Second = setInterval(StatusCheck, 10000);
+        const interval10Second = setInterval(statusCheck, 10000);
 
         return () => {
             clearInterval(interval10Second);
@@ -28,7 +30,7 @@ const CheckLogger = () => {
 
     return (
         <div>
-            <span style={{float:'right',marginRight:30}}>현재 상태: {status?'정상':'에러'}</span>
+            <span style={{float:'right',marginRight:30}}>현재 상태: {serverStatus?'정상':'에러'}</span>
             <br/>
             <br/>
         </div>

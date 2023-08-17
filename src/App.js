@@ -1,5 +1,6 @@
 import './App.css';
 import CheckLogger from './CheckLogger';
+import ReadPubkey from './ReadPubkey';
 import ShowDatabase from './ShowDatabase';
 
 
@@ -8,6 +9,7 @@ function App() {
     <div className="App">
       <CheckLogger />
       <ShowDatabase/>
+      <ReadPubkey />
     </div>
   );
 }
