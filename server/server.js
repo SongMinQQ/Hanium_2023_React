@@ -114,7 +114,7 @@ app.get("/api/tcp", (req,res) => {
   writeData(server,buf3);
   server.on('data', function(data) {
     console.log(data);
-    res.send(data);
+    res.send(JSON.stringify(data));
   });
 })
 

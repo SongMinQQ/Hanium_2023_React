@@ -1,15 +1,16 @@
 import './App.css';
 import CheckLogger from './CheckLogger';
-import ReadPubkey from './ReadPubkey';
+import MenuBar from './MenuBar';
+//import ReadPubkey from './ReadPubkey';
 import ShowDatabase from './ShowDatabase';
-
+import {BrowserRouter, Route, Router, Routes} from 'react-router-dom';
 
 function App() {
   return (
     <div className="App">
-      <CheckLogger />
-      <ShowDatabase/>
-      <ReadPubkey />
+      <BrowserRouter basename='/'>
+        <MenuBar/>
+      </BrowserRouter>
     </div>
   );
 }

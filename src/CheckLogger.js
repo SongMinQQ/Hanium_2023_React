@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import'./App.css'
 
 const CheckLogger = () => {
-    const [serverStatus,setServerStatus] = useState(false);
+    const [serverStatus,setServerStatus] = useState(true);
     //const [loggerStatus,setLoggerStatus] = useState(false);
     useEffect(() => {
         const statusCheck = () => {
@@ -29,10 +30,10 @@ const CheckLogger = () => {
     },[] );
 
     return (
-        <div>
-            <span style={{float:'right',marginRight:30}}>현재 상태: {serverStatus?'정상':'에러'}</span>
+        <div className='status'>
+            <div><span /*style={{float:'right',marginRight:30}}*/>Server status  : &nbsp;{serverStatus?<div className='greenCircle'></div>:<div className='redCircle'></div>}</span></div>
             <br/>
-            <br/>
+            <p><span /*style={{float:'right',marginRight:30}}*/>Logger status  : &nbsp;{serverStatus?<div className='greenCircle'></div>:<div className='redCircle'></div>}</span></p>
         </div>
     );
 };

@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const ReadPubkey = () => {
-    //const fs = require('fs');
+    const buttonMsg = ['generate key','request share','regenerate key, share','encrypt data','decrypt data'];
+    const [count, setCount] = useState(0);
 
-    // const pubKey = fs.readFileSync("../server/rsa.pass.pub");
-
+    const testFunc = () => {
+        setCount(count + 1);
+    }
     return (
         <div>
-            
+            <button onClick={testFunc}>{buttonMsg[count]}</button>
         </div>
     );
 };

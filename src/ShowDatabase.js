@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import ImgModal from './ImgModal';
+import CheckLogger from './CheckLogger';
 
 const ShowDatabase = (props) => {
   const [dbData, setDbData] = useState([]); // array 형태로 전달되는 데이터를 받을 state
@@ -45,6 +46,7 @@ const ShowDatabase = (props) => {
 
   return (
     <div>
+      <CheckLogger/>
       <button onClick={getData}>데이터 보기</button>
       <table border="1">
         <thead>

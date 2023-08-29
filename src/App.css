@@ -36,3 +36,50 @@
     transform: rotate(360deg);
   }
 }
+
+.redCircle {
+  width:15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: red;
+  float: right;
+  /* position: absolute; */
+  margin-top: 7%;
+}
+
+.greenCircle {
+  width:15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: green;
+  float: right;
+  /* position: absolute; */
+  margin-top: 7%;
+}
+
+.status {
+  max-width: 100%;
+  height: 100px;
+  position: fixed;
+  top: 60px;
+  right: 20px;
+}
+/* .status > div {
+  float: right;
+} */
+nav {
+  /*position: fixed;*/
+  /*bottom: 0;*/
+  width: 100%;
+  height: 60px;
+  display: flex;
+  border: solid 2px;
+  padding: 1rem;
+}
+
+nav > div {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
