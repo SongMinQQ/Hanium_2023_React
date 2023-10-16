@@ -1,3 +1,5 @@
+해당 프로젝트의 경우 별도의 organization에서 작업중이므로 당분간 업데이트되지 않습니다.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
